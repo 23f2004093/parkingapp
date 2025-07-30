@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<h3>Lot Status</h3>
+<table class="table">
+<tr><th>Spot ID</th><th>Status</th></tr>
+{% for spot in spots %}
+<tr>
+  <td>{{ spot.id }}</td>
+  <td>
+    {% if spot.status == 'A' %}
+      <span class="badge bg-success">Available</span>
+    {% else %}
+      <span class="badge bg-danger">Occupied</span>
+    {% endif %}
+  </td>
+</tr>
+{% endfor %}
+</table>
+{% endblock %}

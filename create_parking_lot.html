@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<h3>Create Parking Lot</h3>
+<form method="post">
+  <div class="mb-3">
+    <label>Name</label>
+    <input type="text" name="name" class="form-control" required>
+  </div>
+  <div class="mb-3">
+    <label>Address</label>
+    <input name="address" class="form-control" required>
+  </div>
+  <div class="mb-3">
+    <label>Pin Code</label>
+    <input name="pin" class="form-control" required>
+  </div>
+  <div class="mb-3">
+    <label>Price (per hour)</label>
+    <input type="number" step="0.01" min="0" name="price" class="form-control" required>
+  </div>
+  <div class="mb-3">
+    <label>Capacity (No. of spots)</label>
+    <input type="number" min="1" name="capacity" class="form-control" required>
+  </div>
+  <button class="btn btn-primary">Create</button>
+</form>
+{% endblock %}

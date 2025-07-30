@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+<h3>User Dashboard</h3>
+<h5>Your Reservations</h5>
+<table class="table table-bordered">
+<tr>
+  <th>Lot</th>
+  <th>Spot</th>
+  <th>From</th>
+  <th>To</th>
+  <th>Cost</th>
+  <th>Status</th>
+  <th></th>
+</tr>
+{% for r in reservations %}
+<tr>
+  <td>{{ r.spot.lot.name }}</td>
+  <td>{{ r.spot.id }}</td>
+  <td>{{ r.start_time.strftime('%Y-%m-%d %H:%M') }}</td>
+  <td>{% if r.end_time %}{{ r.end_time.strftime('%Y-%m-%d %H:%M') }}{% else %}--{% endif %}</td>
+  <td>{% if r.cost %}₹{{ '%.2f' % r.cost }}{% else %}--{% endif %}</td>
+  <td>{% if not r.end_time %}<span class="badge bg-success">Active</span>{% else %}<span class="badge bg-secondary">Released</span>{% endif %}</td>
+  <td>
+    {% if not r.end_time %}
+    <a href="{{ url_for('user.release', reservation_id=r.id) }}" class="btn btn-sm btn-warning">Release</a>
+    {% endif %}
+  </td>
+</tr>
+{% endfor %}
+</table>
+<h5>Reserve New Spot</h5>
+<form method="get" action="#">
+  <div class="mb-3">
+    <label>Select Lot</label>
+    <select class="form-select" name="lot_id" onchange="location.href='/user/reserve/' + this.value">
+      <option value="">-- Choose --</option>
+      {% for lot in lots %}
+      <option value="{{ lot.id }}">{{ lot.name }} (₹{{ lot.price }}/hr)</option>
+      {% endfor %}
+    </select>
+  </div>
+</form>
+{% endblock %}

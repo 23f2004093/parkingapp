@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<h3>Reserve Parking Spot</h3>
+<form method="post">
+  <div class="mb-3">
+    <label>Select Lot</label>
+    <select class="form-select" name="lot_id" required>
+      {% for lot in lots %}
+        <option value="{{ lot.id }}">{{ lot.name }} - ₹{{ lot.price }}/hr</option>
+      {% endfor %}
+    </select>
+  </div>
+  <button class="btn btn-success">Reserve</button>
+</form>
+{% endblock %}

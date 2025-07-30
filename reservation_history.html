@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<h3>Your Reservation History</h3>
+<table class="table table-bordered">
+<tr>
+  <th>Lot</th><th>Spot</th><th>Start Time</th><th>End Time</th><th>Cost</th>
+</tr>
+{% for r in reservations %}
+<tr>
+  <td>{{ r.spot.lot.name }}</td>
+  <td>{{ r.spot.id }}</td>
+  <td>{{ r.start_time.strftime("%Y-%m-%d %H:%M") }}</td>
+  <td>{% if r.end_time %}{{ r.end_time.strftime("%Y-%m-%d %H:%M") }}{% else %}--{% endif %}</td>
+  <td>{% if r.cost %}₹{{ '%.2f' % r.cost }}{% else %}--{% endif %}</td>
+</tr>
+{% endfor %}
+</table>
+{% endblock %}

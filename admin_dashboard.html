@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block content %}
+<h3>Admin Dashboard</h3>
+
+<a href="{{ url_for('admin.create_parking_lot') }}" class="btn btn-primary mb-3">Create New Parking Lot</a>
+
+<h5>Parking Lots</h5>
+<table class="table table-bordered table-sm align-middle">
+    <tr>
+        <th>Name</th>
+        <th>Address</th>
+        <th>Pin</th>
+        <th>Price</th>
+        <th>Capacity</th>
+        <th>Occupied</th>
+        <th>Action</th>
+    </tr>
+    {% for lot in lots %}
+    <tr>
+        <td>{{ lot.name }}</td>
+        <td>{{ lot.address }}</td>
+        <td>{{ lot.pin_code }}</td>
+        <td>{{ lot.price }}</td>
+        <td>{{ lot.capacity }}</td>
+        <td>
+            {% set occ = lot.spots|selectattr('status','eq','O')|list|length %}
+            {{ occ }} / {{ lot.spots|length }}
+        </td>
+        <td>
+            <a href="{{ url_for('admin.edit_lot', lot_id=lot.id) }}" class="btn btn-warning btn-sm">Edit</a>
+            <form method="post" action="{{ url_for('admin.delete_lot', lot_id=lot.id) }}"
+                  style="display:inline;" 
+                  onsubmit="return confirm('Are you sure you want to delete this lot? All spots must be available.');">
+                <button class="btn btn-danger btn-sm">Delete</button>
+            </form>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h5>Registered Users</h5>
+<ul>
+    {% for user in users %}
+    <li>{{ user.username }}</li>
+    {% endfor %}
+</ul>
+
+<h5>Reservations</h5>
+<ul>
+    {% for r in reservations %}
+    <li>
+      User: {{ r.user.username }}
+      {% if r.spot and r.spot.lot %}
+        - Lot: {{ r.spot.lot.name }} - Spot: {{ r.spot.id }}
+      {% else %}
+        - (Lot or spot has been deleted)
+      {% endif %}
+      - From: {{ r.start_time.strftime('%Y-%m-%d %H:%M') }}
+      {% if r.end_time %}
+        To: {{ r.end_time.strftime('%Y-%m-%d %H:%M') }}
+      {% else %}
+        (Active)
+      {% endif %}
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}
